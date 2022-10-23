@@ -19,7 +19,7 @@ public class LMS {
         // [2] Create session
         Session session = factory.getCurrentSession();
 
-        /* Create `Instructor` & `InstructorDetail`
+        /* Create `Instructor` & `InstructorDetail` (one-to-one uni-directional mapping)
         try {
             // [3] Create the objects
             Instructor tmpInstructor = new Instructor("Joe", "Johnson", "joejohnson@gmail.com");
@@ -46,6 +46,7 @@ public class LMS {
         }
          */
 
+        /* Delete `Instructor` & `InstructorDetail` (one-to-one uni-directional mapping)
         try {
             // [3] Start a transaction
             session.beginTransaction();
@@ -68,5 +69,34 @@ public class LMS {
         } finally {
             factory.close();
         }
+         */
+
+        // Get `InstructorDetail` & `Instructor` (one-to-one bi-directional mapping)
+        try {
+            // Start a transaction
+            session.beginTransaction();
+
+            // Get the instructor detail object
+            int id = 1;
+            InstructorDetail tmpInstructorDetail = session.get(InstructorDetail.class, id);
+
+            // Print the instructor detail
+            System.out.println("tmpInstructorDetail: " + tmpInstructorDetail);
+
+            // Print  the associated instructor
+            System.out.println("the associated instructor: " + tmpInstructorDetail.getInstructor());
+
+            // Commit transaction
+            session.getTransaction().commit();
+
+            System.out.println("Done.");
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        } finally {
+            // Handle connection leak issue
+            session.close();
+            factory.close();
+        }
+         //
     }
 }
