@@ -19,6 +19,7 @@ public class LMS {
         // [2] Create session
         Session session = factory.getCurrentSession();
 
+        /* Create `Instructor` & `InstructorDetail`
         try {
             // [3] Create the objects
             Instructor tmpInstructor = new Instructor("Joe", "Johnson", "joejohnson@gmail.com");
@@ -39,6 +40,30 @@ public class LMS {
             // [7] Commit transaction
             session.getTransaction().commit();
 
+            System.out.println("Done.");
+        } finally {
+            factory.close();
+        }
+         */
+
+        try {
+            // [3] Start a transaction
+            session.beginTransaction();
+
+            // [4] Get instructor by primary key / id
+            int id = 1;
+            Instructor tmpInstructor = session.get(Instructor.class, id);
+            System.out.println("Found instructor: " + tmpInstructor);
+
+            // [5] Delete the instructors
+            // Also delete associated `InstructorDetail` object because of CascadeType.ALL
+            if (tmpInstructor != null) {
+                System.out.println("Deleting: " + tmpInstructor);
+                session.delete(tmpInstructor);
+            }
+
+            // [6] Commit transaction
+            session.getTransaction().commit();
             System.out.println("Done.");
         } finally {
             factory.close();
