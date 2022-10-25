@@ -111,7 +111,7 @@ public class LMS {
             // Print the instructor detail
             System.out.println("tmpInstructorDetail: " + tmpInstructorDetail);
 
-            // Print  the associated instructor
+            // Print the associated instructor
             System.out.println("the associated instructor: " + tmpInstructorDetail.getInstructor());
 
             // Delete the instructor detail
