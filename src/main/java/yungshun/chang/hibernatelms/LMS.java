@@ -99,7 +99,7 @@ public class LMS {
         }
          */
 
-        /* Delete `InstructorDetail` & `Instructor` (one-to-one bi-directional mapping)
+        /* Delete `InstructorDetail` & `Instructor` (one-to-one bi-directional mapping with CascadeType.ALL)
         try {
             // Start a transaction
             session.beginTransaction();
