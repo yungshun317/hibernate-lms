@@ -99,7 +99,7 @@ public class LMS {
         }
          */
 
-        // Delete `InstructorDetail` & `Instructor` (one-to-one bi-directional mapping)
+        /* Delete `InstructorDetail` & `Instructor` (one-to-one bi-directional mapping)
         try {
             // Start a transaction
             session.beginTransaction();
@@ -131,5 +131,44 @@ public class LMS {
 
             factory.close();
         }
+         */
+
+        // Delete `InstructorDetail` & update `Instructor` (one-to-one bi-directional mapping)
+        try {
+            // Start a transaction
+            session.beginTransaction();
+
+            // Get the instructor detail object
+            int id = 3;
+            InstructorDetail tmpInstructorDetail = session.get(InstructorDetail.class, id);
+
+            // Print the instructor detail
+            System.out.println("tmpInstructorDetail: " + tmpInstructorDetail);
+
+            // Print the associated instructor
+            System.out.println("the associated instructor: " + tmpInstructorDetail.getInstructor());
+
+            // Delete the instructor detail
+            System.out.println("Deleting tmpInstructorDetail: " + tmpInstructorDetail);
+
+            // Remove the associated object reference & break bi-directional link
+            tmpInstructorDetail.getInstructor().setInstructorDetail(null);
+
+            session.delete(tmpInstructorDetail);
+
+            // Commit transaction
+            session.getTransaction().commit();
+
+            System.out.println("Done.");
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        } finally {
+            // Handle connection leak issue
+            session.close();
+
+            factory.close();
+        }
+
+         //
     }
 }
