@@ -3,6 +3,7 @@ package yungshun.chang.hibernatelms;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import yungshun.chang.hibernatelms.entity.Course;
 import yungshun.chang.hibernatelms.entity.Instructor;
 import yungshun.chang.hibernatelms.entity.InstructorDetail;
 
@@ -14,6 +15,7 @@ public class LMS {
         SessionFactory factory = new Configuration().configure("hibernate.cfg.xml")
                 .addAnnotatedClass(Instructor.class)
                 .addAnnotatedClass(InstructorDetail.class)
+                .addAnnotatedClass(Course.class)
                 .buildSessionFactory();
 
         // [2] Create session
@@ -73,10 +75,10 @@ public class LMS {
 
         /* Get `InstructorDetail` & `Instructor` (one-to-one bi-directional mapping)
         try {
-            // Start a transaction
+            // [3] Start a transaction
             session.beginTransaction();
 
-            // Get the instructor detail object
+            // [4] Get the instructor detail object
             int id = 1;
             InstructorDetail tmpInstructorDetail = session.get(InstructorDetail.class, id);
 
@@ -86,7 +88,7 @@ public class LMS {
             // Print  the associated instructor
             System.out.println("the associated instructor: " + tmpInstructorDetail.getInstructor());
 
-            // Commit transaction
+            // [5] Commit transaction
             session.getTransaction().commit();
 
             System.out.println("Done.");
@@ -101,10 +103,10 @@ public class LMS {
 
         /* Delete `InstructorDetail` & `Instructor` (one-to-one bi-directional mapping with CascadeType.ALL)
         try {
-            // Start a transaction
+            // [3] Start a transaction
             session.beginTransaction();
 
-            // Get the instructor detail object
+            // [4] Get the instructor detail object
             int id = 2;
             InstructorDetail tmpInstructorDetail = session.get(InstructorDetail.class, id);
 
@@ -114,12 +116,12 @@ public class LMS {
             // Print the associated instructor
             System.out.println("the associated instructor: " + tmpInstructorDetail.getInstructor());
 
-            // Delete the instructor detail
+            // [5] Delete the instructor detail
             System.out.println("Deleting tmpInstructorDetail: " + tmpInstructorDetail);
 
             session.delete(tmpInstructorDetail);
 
-            // Commit transaction
+            // [6] Commit transaction
             session.getTransaction().commit();
 
             System.out.println("Done.");
@@ -133,12 +135,12 @@ public class LMS {
         }
          */
 
-        // Delete `InstructorDetail` & update `Instructor` (one-to-one bi-directional mapping)
+        /* Delete `InstructorDetail` & update `Instructor` (one-to-one bi-directional mapping)
         try {
-            // Start a transaction
+            // [3] Start a transaction
             session.beginTransaction();
 
-            // Get the instructor detail object
+            // [4] Get the instructor detail object
             int id = 3;
             InstructorDetail tmpInstructorDetail = session.get(InstructorDetail.class, id);
 
@@ -151,12 +153,12 @@ public class LMS {
             // Delete the instructor detail
             System.out.println("Deleting tmpInstructorDetail: " + tmpInstructorDetail);
 
-            // Remove the associated object reference & break bi-directional link
+            // [5] Remove the associated object reference & break bi-directional link
             tmpInstructorDetail.getInstructor().setInstructorDetail(null);
 
             session.delete(tmpInstructorDetail);
 
-            // Commit transaction
+            // [6] Commit transaction
             session.getTransaction().commit();
 
             System.out.println("Done.");
@@ -168,7 +170,27 @@ public class LMS {
 
             factory.close();
         }
+         */
 
-         //
+        //
+        try {
+            // [3] Start a transaction
+            session.beginTransaction();
+
+            // [4] Get the instructor from db
+            int id = 1;
+            Instructor tmpInstructor = session.get(Instructor.class, id);
+
+            // [5] Create some courses
+            Course tmpCourse1 = new Course("Mountain Climbing");
+            Course tmpCourse2 = new Course("Trekking");
+
+            // [6] Add courses to instructor
+            tmpInstructor.add(tmpCourse1);
+            tmpInstructor.add(tmpCourse2);
+
+        } finally {
+
+        }
     }
 }
