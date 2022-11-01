@@ -172,7 +172,7 @@ public class LMS {
         }
          */
 
-        // Create `Course` (many-to-one bi-directional mapping)
+        /* Create `Course` (many-to-one bi-directional mapping)
         try {
             // [3] Start a transaction
             session.beginTransaction();
@@ -203,6 +203,30 @@ public class LMS {
 
             factory.close();
         }
-         //
+         */
+
+        // Get `Instructor` & `Course` (one-to-many bi-directional mapping)
+        try {
+            // [3] Start a transaction
+            session.beginTransaction();
+
+            // [4] Get the instructor from db
+            int id = 1;
+            Instructor tmpInstructor = session.get(Instructor.class, id);
+            System.out.println("Instructor: " + tmpInstructor);
+
+            // [5] Get courses for the instructor
+            System.out.println("Courses: " + tmpInstructor.getCourses());
+
+            // [6] Commit transaction
+            session.getTransaction().commit();
+
+            System.out.println("Done.");
+        } finally {
+            // [7] Add clean up code
+            session.close();
+
+            factory.close();
+        }
     }
 }
