@@ -172,7 +172,7 @@ public class LMS {
         }
          */
 
-        //
+        // Create `Course` (many-to-one bi-directional mapping)
         try {
             // [3] Start a transaction
             session.beginTransaction();
@@ -189,8 +189,20 @@ public class LMS {
             tmpInstructor.add(tmpCourse1);
             tmpInstructor.add(tmpCourse2);
 
-        } finally {
+            // [7] Save the courses
+            session.save(tmpCourse1);
+            session.save(tmpCourse2);
 
+            // [8] Commit transaction
+            session.getTransaction().commit();
+
+            System.out.println("Done.");
+        } finally {
+            // [9] Add clean up code
+            session.close();
+
+            factory.close();
         }
+         //
     }
 }
