@@ -230,7 +230,7 @@ public class LMS {
         }
          */
 
-        // Delete `Course` (many-to-one bi-directional mapping)
+        /* Delete `Course` (many-to-one bi-directional mapping)
         try {
             // [3] Start a transaction
             session.beginTransaction();
@@ -254,5 +254,8 @@ public class LMS {
 
             factory.close();
         }
+         */
+
+
     }
 }
