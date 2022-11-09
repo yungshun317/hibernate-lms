@@ -6,6 +6,7 @@ import org.hibernate.cfg.Configuration;
 import yungshun.chang.hibernatelms.entity.Course;
 import yungshun.chang.hibernatelms.entity.Instructor;
 import yungshun.chang.hibernatelms.entity.InstructorDetail;
+import yungshun.chang.hibernatelms.entity.Review;
 
 public class LMS {
 
@@ -16,6 +17,7 @@ public class LMS {
                 .addAnnotatedClass(Instructor.class)
                 .addAnnotatedClass(InstructorDetail.class)
                 .addAnnotatedClass(Course.class)
+                .addAnnotatedClass(Review.class)
                 .buildSessionFactory();
 
         // [2] Create session
@@ -256,6 +258,34 @@ public class LMS {
         }
          */
 
+        // Create `Course` (many-to-one bi-directional mapping) & `Review` (one-to-many uni-directional mapping)
+        try {
+            // [3] Start a transaction
+            session.beginTransaction();
+
+            // [4] Create a course
+            Course tmpCourse = new Course("High-intensity Interval Training");
+
+            // [5] Add some reviews
+            tmpCourse.addReview(new Review("Great course. Loved it!"));
+            tmpCourse.addReview(new Review("Cool course, job well done!"));
+            tmpCourse.addReview(new Review("What a dumb course, you are an idiot!"));
+
+            // [6] Save the course. And leverage the cascade all.
+            System.out.println("Saving the course");
+
+            session.save(tmpCourse);
+
+            // [7] Commit transaction
+            session.getTransaction().commit();
+
+            System.out.println("Done.");
+        } finally {
+            // [8] Add clean up code
+            session.close();
+
+            factory.close();
+        }
 
     }
 }
