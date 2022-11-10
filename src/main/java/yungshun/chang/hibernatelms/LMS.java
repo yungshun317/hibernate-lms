@@ -174,7 +174,7 @@ public class LMS {
         }
          */
 
-        // Create `Instructor` (one-to-many bi-directional mapping) & `Course` (many-to-one bi-directional mapping)
+        /* Create `Instructor` (one-to-many bi-directional mapping) & `Course` (many-to-one bi-directional mapping)
         try {
             // [3] Start a transaction
             session.beginTransaction();
@@ -205,6 +205,7 @@ public class LMS {
 
             factory.close();
         }
+         */
 
         /* Create `Course` (many-to-one bi-directional mapping)
         try {
@@ -290,7 +291,7 @@ public class LMS {
         }
          */
 
-        // Create `Course` (many-to-one bi-directional mapping) & `Review` (one-to-many uni-directional mapping)
+        /* Create `Course` & `Review` (one-to-many uni-directional mapping)
         try {
             // [3] Start a transaction
             session.beginTransaction();
@@ -318,6 +319,32 @@ public class LMS {
 
             factory.close();
         }
+         */
 
+        // Get `Course` & `Review` (one-to-many uni-directional mapping)
+        try {
+            // [3] Start a transaction
+            session.beginTransaction();
+
+            // [4] Get the course
+            int id = 1;
+            Course tmpCourse = session.get(Course.class, id);
+
+            // [5] Print the course
+            System.out.println(tmpCourse);
+
+            // [6] Print the course reviews
+            System.out.println(tmpCourse.getReviews());
+
+            // [7] Commit transaction
+            session.getTransaction().commit();
+
+            System.out.println("Done.");
+        } finally {
+            // [8] Add clean up code
+            session.close();
+
+            factory.close();
+        }
     }
 }
