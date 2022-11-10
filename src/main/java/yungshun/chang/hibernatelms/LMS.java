@@ -174,6 +174,38 @@ public class LMS {
         }
          */
 
+        // Create `Instructor` (one-to-many bi-directional mapping) & `Course` (many-to-one bi-directional mapping)
+        try {
+            // [3] Start a transaction
+            session.beginTransaction();
+
+            // [4] Create instructor
+            Instructor tmpInstructor = new Instructor("Shannon", "Chang", "shannonchang@gmail.com");
+
+            InstructorDetail tmpInstructorDetail = new InstructorDetail("https://www.youtube.com", "Cardio");
+            tmpInstructor.setInstructorDetail(tmpInstructorDetail);
+
+            session.save(tmpInstructor);
+
+            // [5] Create some courses
+            Course tmpCourse1 = new Course("Cardio Boxing");
+            Course tmpCourse2 = new Course("Tai Chi");
+
+            // [6] Add courses to instructor
+            tmpInstructor.add(tmpCourse1);
+            tmpInstructor.add(tmpCourse2);
+
+            // [7] Commit transaction
+            session.getTransaction().commit();
+
+            System.out.println("Done.");
+        } finally {
+            // [8] Add clean up code
+            session.close();
+
+            factory.close();
+        }
+
         /* Create `Course` (many-to-one bi-directional mapping)
         try {
             // [3] Start a transaction
