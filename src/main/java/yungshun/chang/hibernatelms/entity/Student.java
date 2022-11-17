@@ -21,10 +21,12 @@ public class Student {
     @Column(name="email")
     private String email;
 
-    @ManyToMany(fetch=FetchType.LAZY,
+    @ManyToMany(
+            fetch=FetchType.LAZY,
             cascade={CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}
     )
-    @JoinTable(name="course_student",
+    @JoinTable(
+            name="course_student",
             joinColumns=@JoinColumn(name="student_id"),
             inverseJoinColumns=@JoinColumn(name="course_id")
     )
