@@ -321,7 +321,7 @@ public class LMS {
         }
          */
 
-        // Get `Course` & `Review` (one-to-many uni-directional mapping)
+        /* Get `Course` & `Review` (one-to-many uni-directional mapping)
         try {
             // [3] Start a transaction
             session.beginTransaction();
@@ -342,6 +342,38 @@ public class LMS {
             System.out.println("Done.");
         } finally {
             // [8] Add clean up code
+            session.close();
+
+            factory.close();
+        }
+         */
+
+        // Delete `Course` & `Review` (one-to-many uni-directional mapping with CascadeType.ALL)
+        try {
+            // [3] Start a transaction
+            session.beginTransaction();
+
+            // [4] Get the course
+            int id = 1;
+            Course tmpCourse = session.get(Course.class, id);
+
+            // [5] Print the course
+            System.out.println("Deleting the course");
+            System.out.println(tmpCourse);
+
+            // [6] Print the course reviews
+            System.out.println("Deleting the reviews");
+            System.out.println(tmpCourse.getReviews());
+
+            // [7] Delete the course
+            session.delete(tmpCourse);
+
+            // [8] Commit transaction
+            session.getTransaction().commit();
+
+            System.out.println("Done.");
+        } finally {
+            // [9] Add clean up code
             session.close();
 
             factory.close();
