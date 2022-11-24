@@ -3,10 +3,7 @@ package yungshun.chang.hibernatelms;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import yungshun.chang.hibernatelms.entity.Course;
-import yungshun.chang.hibernatelms.entity.Instructor;
-import yungshun.chang.hibernatelms.entity.InstructorDetail;
-import yungshun.chang.hibernatelms.entity.Review;
+import yungshun.chang.hibernatelms.entity.*;
 
 public class LMS {
 
@@ -18,6 +15,7 @@ public class LMS {
                 .addAnnotatedClass(InstructorDetail.class)
                 .addAnnotatedClass(Course.class)
                 .addAnnotatedClass(Review.class)
+                .addAnnotatedClass(Student.class)
                 .buildSessionFactory();
 
         // [2] Create session
@@ -348,7 +346,7 @@ public class LMS {
         }
          */
 
-        // Delete `Course` & `Review` (one-to-many uni-directional mapping with CascadeType.ALL)
+        /* Delete `Course` & `Review` (one-to-many uni-directional mapping with CascadeType.ALL)
         try {
             // [3] Start a transaction
             session.beginTransaction();
@@ -374,6 +372,45 @@ public class LMS {
             System.out.println("Done.");
         } finally {
             // [9] Add clean up code
+            session.close();
+
+            factory.close();
+        }
+         */
+
+        // Create `Course` & `Student` (Many-to-many mapping)
+        try {
+            // [3] Start a transaction
+            session.beginTransaction();
+
+            // [4] Create a course
+            Course tmpCourse = new Course("Tabata");
+
+            // [5] Save the course
+            System.out.println("Saving the course");
+            session.save(tmpCourse);
+            System.out.println("Saved the course: " + tmpCourse);
+
+            // [6] Create the students
+            Student tmpStudent1 = new Student("John", "Doe", "johndoe@gmail.com");
+            Student tmpStudent2 = new Student("Blue", "Mary", "bluemary@gmail.com");
+
+            // [7] Add students to the course
+            tmpCourse.addStudent(tmpStudent1);
+            tmpCourse.addStudent(tmpStudent2);
+
+            // [8] Save the students
+            System.out.println("Saving students");
+            session.save(tmpStudent1);
+            session.save(tmpStudent2);
+            System.out.println("Saved students: " + tmpCourse.getStudents());
+
+            // [9] Commit transaction
+            session.getTransaction().commit();
+
+            System.out.println("Done.");
+        } finally {
+            // [10] Add clean up code
             session.close();
 
             factory.close();
