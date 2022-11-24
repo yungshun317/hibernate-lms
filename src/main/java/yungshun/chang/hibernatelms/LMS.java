@@ -417,7 +417,7 @@ public class LMS {
         }
          */
 
-        // Get `Course` from `Student` (many-to-many mapping)
+        /* Get `Course` from `Student` (many-to-many mapping)
         try {
             // [3] Start a transaction
             session.beginTransaction();
@@ -439,5 +439,34 @@ public class LMS {
 
             factory.close();
         }
+         */
+
+        // Delete `Student` (many-to-many mapping) & relationship in the `course_student` table
+        try {
+            // [3] Start a transaction
+            session.beginTransaction();
+
+            // [4] Get the student from database
+            int id = 2;
+            Student tmpStudent = session.get(Student.class, id);
+
+            System.out.println("Loaded student: " + tmpStudent);
+            System.out.println("Courses: " + tmpStudent.getCourses());
+
+            // [5] Delete student
+            System.out.println("Deleting student: " + tmpStudent);
+            session.delete(tmpStudent);
+
+            // [6] Commit transaction
+            session.getTransaction().commit();
+
+            System.out.println("Done.");
+        } finally {
+            // [7] Add clean up code
+            session.close();
+
+            factory.close();
+        }
+
     }
 }
