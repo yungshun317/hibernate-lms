@@ -441,7 +441,7 @@ public class LMS {
         }
          */
 
-        // Delete `Student` (many-to-many mapping) & relationship in the `course_student` table
+        /* Delete `Student` (many-to-many mapping) & relationship in the `course_student` table
         try {
             // [3] Start a transaction
             session.beginTransaction();
@@ -467,6 +467,43 @@ public class LMS {
 
             factory.close();
         }
+         */
 
+        // Create `Course` for `Student` (many-to-many mapping)
+        try {
+            // [3] Start a transaction
+            session.beginTransaction();
+
+            // [4] Get the student from database
+            int id = 1;
+            Student tmpStudent = session.get(Student.class, id);
+
+            System.out.println("Loaded student: " + tmpStudent);
+            System.out.println("Courses: " + tmpStudent.getCourses());
+
+            // [5] Create more courses
+            Course tmpCourse1 = new Course("Myofascial Release");
+            Course tmpCourse2 = new Course("High-intensity Interval Training");
+
+            // [6] Add student to course
+            tmpCourse1.addStudent(tmpStudent);
+            tmpCourse2.addStudent(tmpStudent);
+
+            // [7] Save the courses
+            System.out.println("Saving the course");
+
+            session.save(tmpCourse1);
+            session.save(tmpCourse2);
+
+            // [8] Commit transaction
+            session.getTransaction().commit();
+
+            System.out.println("Done.");
+        } finally {
+            // [9] Add clean up code
+            session.close();
+
+            factory.close();
+        }
     }
 }
